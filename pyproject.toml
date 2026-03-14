@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "enginesim-zmqlib"
+version = "0.0.1"
+description = "A library that implements the ZMQ controller and messages for the enginesim applications."
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+authors = [
+  { name="Dirk-Jan Bartels" }
+]
+dependencies = [
+  "jsonpickle",
+  "pyzmq"
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
