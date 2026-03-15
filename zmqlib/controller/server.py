@@ -33,9 +33,15 @@ class ZeroMqServerController(object):
 
         self._msg_received = None
 
+        self._callback_func_list = list()
+
         self._running = True
         self._zmq_listener = threading.Thread(target=self._listener_thread)
         self._zmq_listener.start()
+
+    # Registers a callback function for when an action message is received
+    def registerActionMessageCallBack(self, callback_func):
+        self._callback_func_list.append(callback_func)
 
     # Updates the state message that is returned in response to requests
     def updateStateSyncResponse(self, resp_msg_object : EngineSimZeroMqResponseMessage):
@@ -59,10 +65,16 @@ class ZeroMqServerController(object):
             if not isinstance(req_msg_object, EngineSimZeroMqRequestMessage):
                 logging.error("Invalid message received - must be of Request type")
 
-            # Save the message
-            self._sync_state_req_message_lock.acquire()
-            self._sync_state_req_message = req_msg_object
-            self._sync_state_req_message_lock.release()
+            if isinstance(req_msg_object, EngineSimZeroMqCarControlRequestMessage):
+
+                # Save the message
+                self._sync_state_req_message_lock.acquire()
+                self._sync_state_req_message = req_msg_object
+                self._sync_state_req_message_lock.release()
+
+                # Do the callbacks
+                for cb in self._callback_func_list:
+                    cb(req_msg_object)
 
             #
             # Create the response
