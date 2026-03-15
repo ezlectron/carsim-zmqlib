@@ -1,14 +1,14 @@
 import logging
 import time
 
-from zmqlib import ZeroMqClientController, EngineSimZeroMqCarControlRequestMessage
+from zmqlib import ZeroMqClientController, ZmqCarControlRequestMessage
 
 logging.basicConfig(filename='/tmp/zmqlib-client-test.log', level=logging.INFO)
 
 if __name__ == "__main__":
     controller = ZeroMqClientController("tcp://127.0.0.1:5555")
 
-    send_msg = EngineSimZeroMqCarControlRequestMessage(EngineSimZeroMqCarControlRequestMessage.MSG_STATUS_CODE_OK)
+    send_msg = ZmqCarControlRequestMessage(ZmqCarControlRequestMessage.MSG_STATUS_CODE_OK)
 
     controller.updateStateSyncMessage(send_msg)
 

@@ -1,6 +1,6 @@
-from .base import EngineSimZeroMqBaseMessage
+from .base import ZmqBaseMessage
 
-class EngineSimZeroMqRequestMessage(EngineSimZeroMqBaseMessage):
+class ZmqRequestMessage(ZmqBaseMessage):
 
     def __init__(self, status):
-        super().__init__(EngineSimZeroMqBaseMessage.MSG_TYPE_REQUEST, status)
+        super().__init__(ZmqBaseMessage.MSG_TYPE_REQUEST, status)

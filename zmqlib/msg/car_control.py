@@ -1,8 +1,8 @@
-from .request import EngineSimZeroMqRequestMessage
+from .request import ZmqRequestMessage
 
 #
 # Implements all actions that can be performed on a car door
-class EngineSimZeroMqDoorActions():
+class ZmqDoorActions():
 
     def __init__(self):
         self._open_door = False
@@ -24,12 +24,12 @@ class EngineSimZeroMqDoorActions():
 
 #
 # Main car control message
-class EngineSimZeroMqCarControlRequestMessage(EngineSimZeroMqRequestMessage):
+class ZmqCarControlRequestMessage(ZmqRequestMessage):
 
     def __init__(self, status):
         super().__init__(status)
 
         #NOTE: Sub objects must be defined in the __init__()
         #  for them to be decoded by jsonpickle
-        self.door_driver = EngineSimZeroMqDoorActions()
-        self.door_passenger = EngineSimZeroMqDoorActions()
+        self.door_driver = ZmqDoorActions()
+        self.door_passenger = ZmqDoorActions()

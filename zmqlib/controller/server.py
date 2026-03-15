@@ -4,7 +4,7 @@ import threading
 import time
 import zmq
 
-from zmqlib.msg import EngineSimZeroMqRequestMessage, EngineSimZeroMqResponseMessage, EngineSimZeroMqCarControlRequestMessage
+from zmqlib.msg import ZmqRequestMessage, ZmqResponseMessage, ZmqCarControlRequestMessage
 
 logger = logging.getLogger("zmqctrl")
 
@@ -44,13 +44,13 @@ class ZeroMqServerController(object):
         self._callback_func_list.append(callback_func)
 
     # Updates the state message that is returned in response to requests
-    def updateStateSyncResponse(self, resp_msg_object : EngineSimZeroMqResponseMessage):
+    def updateStateSyncResponse(self, resp_msg_object : ZmqResponseMessage):
         self._sync_state_resp_message_lock.acquire()
         self._sync_state_resp_message = resp_msg_object
         self._sync_state_resp_message_lock.release()
 
     # Get the latest action state
-    def getStateSyncRequest(self) -> EngineSimZeroMqCarControlRequestMessage:
+    def getStateSyncRequest(self) -> ZmqCarControlRequestMessage:
         return self._sync_state_req_message
 
     def _listener_thread(self):
@@ -62,10 +62,10 @@ class ZeroMqServerController(object):
             req_msg_object = jsonpickle.decode(req_msg_json)
 
             # Check that the given message is of the right type
-            if not isinstance(req_msg_object, EngineSimZeroMqRequestMessage):
+            if not isinstance(req_msg_object, ZmqRequestMessage):
                 logging.error("Invalid message received - must be of Request type")
 
-            if isinstance(req_msg_object, EngineSimZeroMqCarControlRequestMessage):
+            if isinstance(req_msg_object, ZmqCarControlRequestMessage):
 
                 # Save the message
                 self._sync_state_req_message_lock.acquire()
@@ -80,7 +80,7 @@ class ZeroMqServerController(object):
             # Create the response
             #  If there is no state object set yet, we simply return a standard response
             if not self._sync_state_resp_message:
-                resp_msg_object = EngineSimZeroMqResponseMessage(EngineSimZeroMqResponseMessage.MSG_STATUS_CODE_OK)
+                resp_msg_object = ZmqResponseMessage(ZmqResponseMessage.MSG_STATUS_CODE_OK)
             else:
                 resp_msg_object = self._sync_state_resp_message
 

@@ -1,6 +1,6 @@
 
 
-class EngineSimZeroMqBaseMessage():
+class ZmqBaseMessage():
 
     MSG_TYPE_REQUEST = "REQ"
     MSG_TYPE_RESPONSE = "RES"
