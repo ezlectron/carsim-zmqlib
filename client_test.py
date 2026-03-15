@@ -13,16 +13,14 @@ if __name__ == "__main__":
     controller.updateStateSyncMessage(send_msg)
 
     while True:
-        send_msg.door_driver.doOpenDoor()
+        send_msg.closures.door_driver.doOpenDoor()
 
         state_msg = controller.getStateSyncResponse()
         if state_msg:
-            print ("Door state: {}".format(state_msg.door_driver.getDoorIsOpen()))
-
             print (controller.getStateSyncResponseJson())
 
         time.sleep(1)
 
-        send_msg.door_driver.doCloseDoor()
+        send_msg.closures.door_driver.doCloseDoor()
 
         time.sleep(1)

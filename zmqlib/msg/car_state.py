@@ -14,6 +14,13 @@ class ZmqDoorState():
         return self.is_door_open
 
 #
+# Wrapper for the doors, trunk, tank flap and bonnet
+class ZmqCarClosuresStateWrapper():
+    def __init__(self):
+        self.door_driver = ZmqDoorState()
+        self.door_passenger = ZmqDoorState()
+
+#
 # Main car state response message
 class ZmqCarStateResponseMessage(ZmqResponseMessage):
 
@@ -22,5 +29,4 @@ class ZmqCarStateResponseMessage(ZmqResponseMessage):
 
         #NOTE: Sub objects must be defined in the __init__()
         #  for them to be decoded by jsonpickle
-        self.door_driver = ZmqDoorState()
-        self.door_passenger = ZmqDoorState()
+        self.closures = ZmqCarClosuresStateWrapper()

@@ -23,6 +23,14 @@ class ZmqDoorActions():
         return self.close_door
 
 #
+# Wrapper for the doors, trunk, tank flap and bonnet
+class ZmqClosuresActionWrapper():
+
+    def __init__(self):
+        self.door_driver = ZmqDoorActions()
+        self.door_passenger = ZmqDoorActions()
+
+#
 # Main car control message
 class ZmqCarControlRequestMessage(ZmqRequestMessage):
 
@@ -31,5 +39,4 @@ class ZmqCarControlRequestMessage(ZmqRequestMessage):
 
         #NOTE: Sub objects must be defined in the __init__()
         #  for them to be decoded by jsonpickle
-        self.door_driver = ZmqDoorActions()
-        self.door_passenger = ZmqDoorActions()
+        self.closures = ZmqClosuresActionWrapper()

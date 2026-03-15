@@ -15,15 +15,15 @@ if __name__ == "__main__":
     controller.registerActionMessageCallBack(callback_func)
 
     while True:
-        resp.door_driver.setDoorState(True)
+        resp.closures.door_driver.setDoorState(True)
         controller.updateStateSyncResponse(resp)
 
         time.sleep(5)
 
-        resp.door_driver.setDoorState(False)
+        resp.closures.door_driver.setDoorState(False)
         controller.updateStateSyncResponse(resp)
 
         if controller.getStateSyncRequest() is not None:
-            print (controller.getStateSyncRequest().door_driver.isOpenDoorAction())
+            print (controller.getStateSyncRequest().closures.door_driver.isOpenDoorAction())
 
         time.sleep(5)
