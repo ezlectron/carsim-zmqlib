@@ -8,12 +8,19 @@ class ZmqDoorState():
         self.name = name
         self.position = position
         self.is_door_open = False
+        self.is_lock_locked = False
 
     def setDoorState(self, state):
         self.is_door_open = state
 
+    def setLockState(self, state):
+        self.is_lock_locked = state
+
     def getDoorIsOpen(self):
         return self.is_door_open
+
+    def getLockIsLocked(self):
+        return self.is_lock_locked
 
 #
 # Wrapper for the doors, trunk, tank flap and bonnet

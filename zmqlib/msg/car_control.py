@@ -8,6 +8,9 @@ class ZmqDoorActions():
         self.open_door = False
         self.close_door = False
 
+        self.keylock_lock = False
+        self.keylock_unlock = False
+
     def doOpenDoor(self):
         self.open_door = True
         self.close_door = False
@@ -16,11 +19,31 @@ class ZmqDoorActions():
         self.open_door = False
         self.close_door = True
 
+    def doKeyLockLock(self):
+        self.keylock_lock = True
+        self.keylock_unlock = False
+
+    def doKeyLockUnLock(self):
+        self.keylock_lock = False
+        self.keylock_unlock = True
+
+    def doResetAction(self):
+        self.open_door = False
+        self.close_door = False
+        self.keylock_lock = False
+        self.keylock_unlock = False
+
     def isOpenDoorAction(self):
         return self.open_door
 
     def isCloseDoorAction(self):
         return self.close_door
+
+    def isKeyLockLockAction(self):
+        return self.keylock_lock
+
+    def isKeyLockUnLockAction(self):
+        return self.keylock_unlock
 
 #
 # Wrapper for the doors, trunk, tank flap and bonnet
