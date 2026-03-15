@@ -9,4 +9,4 @@ if __name__ == "__main__":
 
     send_msg = EngineSimZeroMqRequestMessage(EngineSimZeroMqRequestMessage.MSG_STATUS_CODE_OK)
 
-    controller.sendMessage(send_msg)
+    controller.updateStateSyncMessage(send_msg)

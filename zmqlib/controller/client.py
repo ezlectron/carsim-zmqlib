@@ -22,8 +22,16 @@ class ZeroMqClientController(object):
         self._socket = self._context.socket(zmq.REQ)
         self._socket.connect(connect_spec)
 
+        self._sync_state_message = None
+        self._sync_state_message_lock = threading.Lock()
+
+        self._running = True
+        self._sync_message_thread = threading.Thread(target = self._state_sync_message_thread)
+        self._sync_message_thread.start()
+
         logging.info("ZMQ Controller is now connected to {}".format(connect_spec))
 
+    # Sends a single message
     def sendMessage(self, req_msg_object):
         if not isinstance(req_msg_object, EngineSimZeroMqRequestMessage):
             logging.error("Cannot send message - must be of Request type")
@@ -43,3 +51,21 @@ class ZeroMqClientController(object):
         print("Received response: %s" % resp_msg_object)
         print ("ZMQ Message: Type {}, Status {}".format(resp_msg_object.getMessageType(), resp_msg_object.getStatusCode()))
 
+    # Update the message that needs to be synced with the server
+    def updateStateSyncMessage(self, req_msg_object):
+        self._sync_state_message_lock.acquire()
+        self._sync_state_message = req_msg_object
+        self._sync_state_message_lock.release()
+
+    # Continiously send a message to sync it with the server
+    def _state_sync_message_thread(self):
+
+        while self._running:
+
+            # Only send when the message has been set
+            if self._sync_state_message is not None:
+                self._sync_state_message_lock.acquire()
+                self.sendMessage(self._sync_state_message)
+                self._sync_state_message_lock.release()
+
+            time.sleep(0.5)
