@@ -5,13 +5,13 @@ from .response import ZmqResponseMessage
 class ZmqDoorState():
 
     def __init__(self):
-        self._is_door_open = False
+        self.is_door_open = False
 
     def setDoorState(self, state):
-        self._is_door_open = state
+        self.is_door_open = state
 
     def getDoorIsOpen(self):
-        return self._is_door_open
+        return self.is_door_open
 
 #
 # Main car state response message

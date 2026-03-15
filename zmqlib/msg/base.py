@@ -9,12 +9,11 @@ class ZmqBaseMessage():
     MSG_STATUS_CODE_FAIL = "FAIL"
 
     def __init__(self, type, status):
-        self._type = type
-        self._status = status
-
+        self.type = type
+        self.status = status
 
     def getMessageType(self):
-        return self._type
+        return self.type
 
     def getStatusCode(self):
-        return self._status
+        return self.status

@@ -63,6 +63,9 @@ class ZeroMqClientController(object):
     def getStateSyncResponse(self) -> ZmqCarStateResponseMessage:
         return self._sync_state_resp_message
 
+    def getStateSyncResponseJson(self) -> str:
+        return jsonpickle.encode(self._sync_state_resp_message, unpicklable=False)
+
     # Continiously send a message to sync it with the server
     def _state_sync_message_thread(self):
 

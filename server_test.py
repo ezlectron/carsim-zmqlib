@@ -23,6 +23,7 @@ if __name__ == "__main__":
         resp.door_driver.setDoorState(False)
         controller.updateStateSyncResponse(resp)
 
-        print (controller.getStateSyncRequest().door_driver.isOpenDoorAction())
+        if controller.getStateSyncRequest() is not None:
+            print (controller.getStateSyncRequest().door_driver.isOpenDoorAction())
 
         time.sleep(5)

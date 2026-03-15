@@ -19,6 +19,8 @@ if __name__ == "__main__":
         if state_msg:
             print ("Door state: {}".format(state_msg.door_driver.getDoorIsOpen()))
 
+            print (controller.getStateSyncResponseJson())
+
         time.sleep(1)
 
         send_msg.door_driver.doCloseDoor()

@@ -5,22 +5,22 @@ from .request import ZmqRequestMessage
 class ZmqDoorActions():
 
     def __init__(self):
-        self._open_door = False
-        self._close_door = False
+        self.open_door = False
+        self.close_door = False
 
     def doOpenDoor(self):
-        self._open_door = True
-        self._close_door = False
+        self.open_door = True
+        self.close_door = False
 
     def doCloseDoor(self):
-        self._open_door = False
-        self._close_door = True
+        self.open_door = False
+        self.close_door = True
 
     def isOpenDoorAction(self):
-        return self._open_door
+        return self.open_door
 
     def isCloseDoorAction(self):
-        return self._close_door
+        return self.close_door
 
 #
 # Main car control message
