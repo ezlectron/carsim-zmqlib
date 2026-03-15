@@ -34,15 +34,19 @@ class ZeroMqClientController(object):
         logging.info("ZMQ Controller is now connected to {}".format(connect_spec))
 
     # Sends a single message
-    def sendMessage(self, req_msg_object):
+    def sendMessage(self, req_msg_object: EngineSimZeroMqRequestMessage):
+
+        # Check that the given message is of the right type
         if not isinstance(req_msg_object, EngineSimZeroMqRequestMessage):
             logging.error("Cannot send message - must be of Request type")
 
+        #
         # Send the object as JSON struct via ZeroMQ
         req_msg_json = jsonpickle.encode(req_msg_object)
         self._socket.send_json(req_msg_json)
 
-        # Receive the reply - check that it is of the Response Type
+        #
+        # Receive the reply and check that it is of the Response Type
         resp_msg_json = self._socket.recv_json()
         self._sync_state_resp_message = jsonpickle.decode(resp_msg_json)
 
@@ -50,11 +54,8 @@ class ZeroMqClientController(object):
             logging.error("Received unexpected reply after sending message - not of Response type")
             return
 
-        #print("Received response: %s" % self._sync_state_resp_message)
-        #print ("ZMQ Message: Type {}, Status {}".format(self._sync_state_resp_message.getMessageType(), self._sync_state_resp_message.getStatusCode()))
-
     # Update the message that needs to be synced with the server
-    def updateStateSyncMessage(self, req_msg_object):
+    def updateStateSyncMessage(self, req_msg_object: EngineSimZeroMqRequestMessage):
         self._sync_state_req_message_lock.acquire()
         self._sync_state_req_message = req_msg_object
         self._sync_state_req_message_lock.release()
