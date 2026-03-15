@@ -3,9 +3,9 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "enginesim-zmqlib"
+name = "carsim-zmqlib"
 version = "0.0.1"
-description = "A library that implements the ZMQ controller and messages for the enginesim applications."
+description = "A library that implements the ZMQ controller and messages for the CarSim applications."
 readme = "README.md"
 requires-python = ">=3.8"
 license = {text = "MIT"}
