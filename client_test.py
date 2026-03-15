@@ -13,7 +13,7 @@ if __name__ == "__main__":
     controller.updateStateSyncMessage(send_msg)
 
     while True:
-        send_msg.closures.door_driver.doOpenDoor()
+        send_msg.closures.doors.door_driver.doOpenDoor()
 
         state_msg = controller.getStateSyncResponse()
         if state_msg:
@@ -21,6 +21,6 @@ if __name__ == "__main__":
 
         time.sleep(1)
 
-        send_msg.closures.door_driver.doCloseDoor()
+        send_msg.closures.doors.door_driver.doCloseDoor()
 
         time.sleep(1)

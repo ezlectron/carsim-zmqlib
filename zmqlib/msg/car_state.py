@@ -4,7 +4,9 @@ from .response import ZmqResponseMessage
 # Represents the state of a car door and its features (locks, windows, etc.)
 class ZmqDoorState():
 
-    def __init__(self):
+    def __init__(self, name, position):
+        self.name = name
+        self.position = position
         self.is_door_open = False
 
     def setDoorState(self, state):
@@ -17,8 +19,15 @@ class ZmqDoorState():
 # Wrapper for the doors, trunk, tank flap and bonnet
 class ZmqCarClosuresStateWrapper():
     def __init__(self):
-        self.door_driver = ZmqDoorState()
-        self.door_passenger = ZmqDoorState()
+        self.doors = ZmqCarDoorsStateWrapper()
+
+#
+# Wrapper for the doors
+class ZmqCarDoorsStateWrapper():
+
+    def __init__(self):
+        self.door_driver = ZmqDoorState("Driver door", "Front Left")
+        self.door_passenger = ZmqDoorState("Passenger door", "Front Right")
 
 #
 # Main car state response message

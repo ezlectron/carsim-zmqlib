@@ -27,6 +27,12 @@ class ZmqDoorActions():
 class ZmqClosuresActionWrapper():
 
     def __init__(self):
+        self.doors = ZmqDoorsActionWrapper()
+
+#
+# Wrapper for the doors
+class ZmqDoorsActionWrapper():
+    def __init__(self):
         self.door_driver = ZmqDoorActions()
         self.door_passenger = ZmqDoorActions()
 
