@@ -4,7 +4,7 @@ import threading
 import time
 import zmq
 
-from zmqlib.msg import EngineSimZeroMqRequestMessage, EngineSimZeroMqResponseMessage
+from zmqlib.msg import EngineSimZeroMqRequestMessage, EngineSimZeroMqResponseMessage, EngineSimZeroMqCarStateResponseMessage
 
 class ZeroMqClientController(object):
 
@@ -22,8 +22,10 @@ class ZeroMqClientController(object):
         self._socket = self._context.socket(zmq.REQ)
         self._socket.connect(connect_spec)
 
-        self._sync_state_message = None
-        self._sync_state_message_lock = threading.Lock()
+        self._sync_state_req_message = None
+        self._sync_state_req_message_lock = threading.Lock()
+        self._sync_state_resp_message = None
+        self._sync_state_resp_message_lock = threading.Lock()
 
         self._running = True
         self._sync_message_thread = threading.Thread(target = self._state_sync_message_thread)
@@ -42,20 +44,23 @@ class ZeroMqClientController(object):
 
         # Receive the reply - check that it is of the Response Type
         resp_msg_json = self._socket.recv_json()
-        resp_msg_object = jsonpickle.decode(resp_msg_json)
+        self._sync_state_resp_message = jsonpickle.decode(resp_msg_json)
 
-        if not isinstance(resp_msg_object, EngineSimZeroMqResponseMessage):
+        if not isinstance(self._sync_state_resp_message, EngineSimZeroMqResponseMessage):
             logging.error("Received unexpected reply after sending message - not of Response type")
             return
 
-        print("Received response: %s" % resp_msg_object)
-        print ("ZMQ Message: Type {}, Status {}".format(resp_msg_object.getMessageType(), resp_msg_object.getStatusCode()))
+        #print("Received response: %s" % self._sync_state_resp_message)
+        #print ("ZMQ Message: Type {}, Status {}".format(self._sync_state_resp_message.getMessageType(), self._sync_state_resp_message.getStatusCode()))
 
     # Update the message that needs to be synced with the server
     def updateStateSyncMessage(self, req_msg_object):
-        self._sync_state_message_lock.acquire()
-        self._sync_state_message = req_msg_object
-        self._sync_state_message_lock.release()
+        self._sync_state_req_message_lock.acquire()
+        self._sync_state_req_message = req_msg_object
+        self._sync_state_req_message_lock.release()
+
+    def getStateSyncResponse(self) -> EngineSimZeroMqCarStateResponseMessage:
+        return self._sync_state_resp_message
 
     # Continiously send a message to sync it with the server
     def _state_sync_message_thread(self):
@@ -63,9 +68,9 @@ class ZeroMqClientController(object):
         while self._running:
 
             # Only send when the message has been set
-            if self._sync_state_message is not None:
-                self._sync_state_message_lock.acquire()
-                self.sendMessage(self._sync_state_message)
-                self._sync_state_message_lock.release()
+            if self._sync_state_req_message is not None:
+                self._sync_state_req_message_lock.acquire()
+                self.sendMessage(self._sync_state_req_message)
+                self._sync_state_req_message_lock.release()
 
             time.sleep(0.5)
