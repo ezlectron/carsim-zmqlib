@@ -24,6 +24,10 @@ if __name__ == "__main__":
         controller.updateStateSyncResponse(resp)
 
         if controller.getStateSyncRequest() is not None:
+            print ("Door open action:")
             print (controller.getStateSyncRequest().closures.doors.door_driver.isOpenDoorAction())
+
+            print ("Central lock action")
+            print (controller.getStateSyncRequest().closures.doors.door_driver.isCentralDoorLockAction())
 
         time.sleep(5)
