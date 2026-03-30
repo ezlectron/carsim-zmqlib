@@ -11,6 +11,10 @@ class ZmqDoorActions():
         self.keylock_lock = False
         self.keylock_unlock = False
 
+        # Only used by driver door
+        self.central_lock_button = False
+        self.central_unlock_button = False
+
     def doOpenDoor(self):
         self.open_door = True
         self.close_door = False
@@ -35,6 +39,16 @@ class ZmqDoorActions():
         self.keylock_lock = False
         self.keylock_unlock = False
 
+    # Actions only performed when it is the driver door
+    def doCentralLockButtonAction(self):
+        self.central_lock_button = True
+        self.central_unlock_button = False
+
+    def doCentralUnlockButtonAction(self):
+        self.central_lock_button = False
+        self.central_unlock_button = True
+
+    # General statuses
     def isOpenDoorAction(self):
         return self.open_door
 
@@ -49,6 +63,13 @@ class ZmqDoorActions():
 
     def isKeyLockNeutralAction(self):
         return self.keylock_lock and self.keylock_unlock
+
+    # Door controller statuses
+    def isCentralDoorLockAction(self):
+        return self.central_lock_button
+
+    def isCentralDoorUnlockAction(self):
+        return self.central_unlock_button
 
 #
 # Wrapper for the doors, trunk, tank flap and bonnet
