@@ -40,13 +40,23 @@ class ZmqDoorActions():
         self.keylock_unlock = False
 
     # Actions only performed when it is the driver door
-    def doCentralLockButtonAction(self):
+    def doCentralLockButtonActionPress(self):
         self.central_lock_button = True
+
+        # Because the two buttons should never be pressed at the same time
         self.central_unlock_button = False
 
-    def doCentralUnlockButtonAction(self):
+    def doCentralLockButtonActionRelease(self):
         self.central_lock_button = False
+
+    def doCentralUnlockButtonActionPress(self):
         self.central_unlock_button = True
+
+        # Because the two buttons should never be pressed at the same time
+        self.central_lock_button = False
+
+    def doCentralUnlockButtonActionRelease(self):
+        self.central_unlock_button = False
 
     # General statuses
     def isOpenDoorAction(self):
