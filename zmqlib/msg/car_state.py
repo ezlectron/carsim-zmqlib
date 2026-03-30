@@ -47,6 +47,9 @@ class ZmqCarClosuresStateWrapper():
 # Wrapper for the doors
 class ZmqCarDoorsStateWrapper():
 
+    DOOR_DRIVER     = "Driver door"
+    DOOR_PASSENGER  = "Passenger door"
+
     def __init__(self):
         self.door_driver = ZmqDoorState(self.DOOR_DRIVER, "Front Left")
         self.door_passenger = ZmqDoorState(self.DOOR_PASSENGER, "Front Right")
