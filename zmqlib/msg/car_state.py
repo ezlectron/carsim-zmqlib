@@ -7,11 +7,13 @@ class ZmqDoorState():
     DOOR_DRIVER     = "Driver door"
     DOOR_PASSENGER  = "Passenger door"
 
-    def __init__(self, name, position):
+    def __init__(self, name, door_position):
         self.name = name
-        self.position = position
+        self.door_position = door_position
         self.is_door_open = False
         self.is_lock_locked = False
+
+        self.window_position = 0
 
         # Only defined when driver door
         if self.name == self.DOOR_DRIVER:
@@ -23,13 +25,19 @@ class ZmqDoorState():
     def setLockState(self, state):
         self.is_lock_locked = state
 
+    def setWindowPosition(self, position):
+        self.window_position = position
+
     def getDoorIsOpen(self):
         return self.is_door_open
 
     def getLockIsLocked(self):
         return self.is_lock_locked
 
-    # Driver door st ates
+    def getWindowPosition(self):
+        return self.window_position
+
+    # Driver door states
 
     def setCentralDoorLockState(self, state):
         self.central_door_lock_active = state

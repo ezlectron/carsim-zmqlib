@@ -6,7 +6,8 @@ from zmqlib import ZeroMqServerController, ZmqCarControlRequestMessage, ZmqCarSt
 logging.basicConfig(filename='/tmp/zmqlib-server-test.log', level=logging.INFO)
 
 def callback_func(msg : ZmqCarControlRequestMessage):
-    print (msg)
+    #print (msg)
+    pass
 
 if __name__ == "__main__":
     resp = ZmqCarStateResponseMessage(ZmqCarStateResponseMessage.MSG_STATUS_CODE_OK)
@@ -16,18 +17,25 @@ if __name__ == "__main__":
 
     while True:
         resp.closures.doors.door_driver.setDoorState(True)
+        resp.closures.doors.door_driver.setWindowPosition(75)
+        resp.closures.doors.door_passenger.setWindowPosition(100)
         controller.updateStateSyncResponse(resp)
 
         time.sleep(5)
 
         resp.closures.doors.door_driver.setDoorState(False)
+        resp.closures.doors.door_driver.setWindowPosition(15)
+        resp.closures.doors.door_passenger.setWindowPosition(45)
         controller.updateStateSyncResponse(resp)
 
         if controller.getStateSyncRequest() is not None:
-            print ("Door open action:")
-            print (controller.getStateSyncRequest().closures.doors.door_driver.isOpenDoorAction())
+            #print ("Door open action:")
+            #print (controller.getStateSyncRequest().closures.doors.door_driver.isOpenDoorAction())
 
-            print ("Central lock action")
-            print (controller.getStateSyncRequest().closures.doors.door_driver.isCentralDoorLockAction())
+            #print ("Central lock action")
+            #print (controller.getStateSyncRequest().closures.doors.door_driver.isCentralDoorLockAction())
+
+            print ("Window Action")
+            print (controller.getStateSyncRequest().closures.doors.door_driver.isWindowOpenAction())
 
         time.sleep(5)

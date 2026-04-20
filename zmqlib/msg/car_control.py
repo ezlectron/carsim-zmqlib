@@ -11,6 +11,11 @@ class ZmqDoorActions():
         self.keylock_lock = False
         self.keylock_unlock = False
 
+        self.window_close = False
+        self.window_close_auto = False
+        self.window_open = False
+        self.window_open_auto = False
+
         # Only used by driver door
         self.central_lock_button = False
         self.central_unlock_button = False
@@ -39,6 +44,38 @@ class ZmqDoorActions():
         self.keylock_lock = False
         self.keylock_unlock = False
 
+
+    # Window actions
+    def doCloseWindow(self):
+        self.window_close = True
+        self.window_close_auto = False
+        self.window_open = False
+        self.window_open_auto = False
+
+    def doCloseWindowAuto(self):
+        self.window_close = False
+        self.window_close_auto = True
+        self.window_open = False
+        self.window_open_auto = False
+
+    def doOpenWindow(self):
+        self.window_close = False
+        self.window_close_auto = False
+        self.window_open = True
+        self.window_open_auto = False
+
+    def doOpenWindowAuto(self):
+        self.window_close = False
+        self.window_close_auto = False
+        self.window_open = False
+        self.window_open_auto = True
+
+    def doResetWindowAction(self):
+        self.window_close = False
+        self.window_close_auto = False
+        self.window_open = False
+        self.window_open_auto = False
+
     # Actions only performed when it is the driver door
     def doCentralLockButtonActionPress(self):
         self.central_lock_button = True
@@ -58,6 +95,7 @@ class ZmqDoorActions():
     def doCentralUnlockButtonActionRelease(self):
         self.central_unlock_button = False
 
+
     # General statuses
     def isOpenDoorAction(self):
         return self.open_door
@@ -73,6 +111,21 @@ class ZmqDoorActions():
 
     def isKeyLockNeutralAction(self):
         return self.keylock_lock and self.keylock_unlock
+
+
+    # Window statuses
+    def isWindowCloseAction(self):
+        return self.window_close
+
+    def isWindowAutoCloseAction(self):
+        return self.window_close_auto
+
+    def isWindowOpenAction(self):
+        return self.window_open
+
+    def isWindowAutoOpenAction(self):
+        return self.window_open_auto
+
 
     # Door controller statuses
     def isCentralDoorLockAction(self):
